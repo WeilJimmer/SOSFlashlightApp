@@ -9,7 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="org.wbftw.weil.sos_flashlight.ui.fragment.MainFragment"
         android:label="@string/main_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_main">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -33,7 +33,7 @@
         android:id="@+id/SecondFragment"
         android:name="org.wbftw.weil.sos_flashlight.ui.fragment.CodeReaderFragment"
         android:label="@string/code_reader_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_code_reader">
     </fragment>
 
     <fragment

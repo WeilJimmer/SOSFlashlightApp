@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.wbftw.weil.sos_flashlight.ui.activity.MainActivity
-import org.wbftw.weil.sos_flashlight.databinding.FragmentFirstBinding
+import org.wbftw.weil.sos_flashlight.databinding.FragmentMainBinding
 
 /**
  * [MainFragment] is used to display the main interface of the SOS Flashlight application.
@@ -14,12 +14,12 @@ import org.wbftw.weil.sos_flashlight.databinding.FragmentFirstBinding
  */
 class MainFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
 
     }

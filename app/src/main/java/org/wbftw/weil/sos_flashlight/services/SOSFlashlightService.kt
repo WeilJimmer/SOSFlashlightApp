@@ -262,7 +262,7 @@ class SOSFlashlightService : Service() {
         }
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibratorManager?.vibrate(VibrationEffect.createOneShot(t, VibrationEffect.EFFECT_HEAVY_CLICK))
+                vibratorManager?.vibrate(VibrationEffect.createOneShot(t, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
                 @Suppress("DEPRECATION")
                 vibratorManager?.vibrate(t)

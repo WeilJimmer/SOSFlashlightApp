@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
 import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
-import org.wbftw.weil.sos_flashlight.databinding.FragmentSecondBinding
+import org.wbftw.weil.sos_flashlight.databinding.FragmentCodeReaderBinding
 import org.wbftw.weil.sos_flashlight.ui.viewmodel.SecondViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -26,7 +26,7 @@ class CodeReaderFragment : Fragment() {
 
     val TAG = "SecondFragment"
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentCodeReaderBinding? = null
     private val viewModel: SecondViewModel by lazy {
         ViewModelProvider(this).get(SecondViewModel::class.java)
     }
@@ -43,7 +43,7 @@ class CodeReaderFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentCodeReaderBinding.inflate(inflater, container, false)
         return binding.root
 
     }

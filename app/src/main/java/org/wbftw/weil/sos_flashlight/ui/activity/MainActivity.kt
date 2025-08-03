@@ -33,6 +33,7 @@ import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.services.SOSFlashlightService
 import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
 import org.wbftw.weil.sos_flashlight.ui.fragment.MainFragment
+import org.wbftw.weil.sos_flashlight.utils.BrightControl
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : BaseActivity() {
@@ -52,6 +53,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         app = application as SOSFlashlightApp
+        BrightControl.setContext(applicationContext)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val controller: WindowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.decorView)
@@ -85,7 +87,6 @@ class MainActivity : BaseActivity() {
         requestNotificationPermission()
 
         init()
-
     }
 
     private fun init(){
@@ -139,6 +140,7 @@ class MainActivity : BaseActivity() {
             rootLayout?.setBackgroundColor(Color.BLACK)
             supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.black))
         }
+        BrightControl.setBrightness(this, 255) // Set brightness to maximum when SOS is active
     }
 
     private fun updateSignalChar(signalChar: Char) {
@@ -159,6 +161,7 @@ class MainActivity : BaseActivity() {
             rootLayout?.setBackgroundColor(ContextCompat.getColor(this, android.R.color.background_light))
             supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.white))
         }
+        BrightControl.setBrightness(this, WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE) // Reset brightness to system default
     }
 
 

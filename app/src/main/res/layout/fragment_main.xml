@@ -28,7 +28,9 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/switch_button"
-                android:src="@drawable/ic_power_black_64dp"/>
+                android:src="@drawable/ic_power_black_64dp"
+                app:tint="?attr/colorPrimary"
+                />
 
         </androidx.cardview.widget.CardView>
 
