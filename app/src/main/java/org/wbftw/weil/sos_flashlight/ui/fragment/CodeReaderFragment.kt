@@ -20,9 +20,9 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 /**
- * [SecondFragment] is used to handle Morse code input and display the corresponding text.
+ * [CodeReaderFragment] is used to handle Morse code input and display the corresponding text.
  */
-class SecondFragment : Fragment() {
+class CodeReaderFragment : Fragment() {
 
     val TAG = "SecondFragment"
 

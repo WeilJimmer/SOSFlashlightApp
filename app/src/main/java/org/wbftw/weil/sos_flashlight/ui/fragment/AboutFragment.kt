@@ -12,9 +12,9 @@ import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.databinding.FragmentCopyrightBinding
 
 /**
- * CopyrightFragment is used to display the copyright information and provide navigation options.
+ * [AboutFragment] is used to display the copyright information and provide navigation options.
  */
-class CopyrightFragment : Fragment() {
+class AboutFragment : Fragment() {
 
     private var _binding: FragmentCopyrightBinding? = null
     private val binding get() = _binding!!

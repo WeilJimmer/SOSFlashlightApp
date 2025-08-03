@@ -9,10 +9,10 @@ import org.wbftw.weil.sos_flashlight.ui.activity.MainActivity
 import org.wbftw.weil.sos_flashlight.databinding.FragmentFirstBinding
 
 /**
- * [FirstFragment] is used to display the main interface of the SOS Flashlight application.
+ * [MainFragment] is used to display the main interface of the SOS Flashlight application.
  * It allows users to toggle the sending of messages and displays the current signal character.
  */
-class FirstFragment : Fragment() {
+class MainFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!

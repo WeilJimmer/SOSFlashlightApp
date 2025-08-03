@@ -36,7 +36,7 @@ import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.services.SOSFlashlightService
 import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
-import org.wbftw.weil.sos_flashlight.ui.fragment.FirstFragment
+import org.wbftw.weil.sos_flashlight.ui.fragment.MainFragment
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : AppCompatActivity() {
@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity() {
                     val signalChar = intent.getCharExtra(SOSFlashlightService.Companion.EXTRA_MESSAGE, ' ')
                     updateScreenColor(isLightOn)
                     updateSignalChar(signalChar)
+                    isSendingMessageRunning.set(true)
                 }
                 SOSFlashlightService.Companion.ACTION_SOS_FINISHED -> {
                     resetScreen()
@@ -150,7 +151,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateSignalChar(signalChar: Char) {
         Log.d(TAG, "Updating signal character: $signalChar")
         val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)?.childFragmentManager?.fragments?.firstOrNull()
-        if (fragment is FirstFragment) {
+        if (fragment is MainFragment) {
             fragment.updateSignalChar(signalChar)
         }
     }
