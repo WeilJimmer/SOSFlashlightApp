@@ -1,0 +1,25 @@
+# SOS Flashlight v1.0.0 (10000) - Initial Release
+
+We're excited to announce the first official release of SOS Flashlight, a comprehensive Morse code communication tool for Android!
+
+## 🎉 First Public Release
+
+This initial version brings all core functionalities to life, transforming your smartphone into a powerful emergency signaling device and Morse code translator.
+
+## ✨ Features
+
+- **Multi-channel Morse Code Transmission**:
+  1. Camera flashlight signaling
+  2. Device vibration patterns
+  3. Audio tone generation
+  4. Screen brightness pulsing
+
+- **Background Service** for continuous signaling even when the app is minimized
+
+- **Custom Message Support** with automatic translation to Morse code
+
+- **Adjustable Transmission Speed** (slow, medium, fast)
+
+- **Integrated Morse Code Decoder** for translating received signals
+
+- **User-friendly Interface** with independent channel toggling

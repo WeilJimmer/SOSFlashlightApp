@@ -1,0 +1,35 @@
+SOS Flashlight App transforms your smartphone into a powerful Morse code signaling device, capable of transmitting emergency messages or custom text through multiple channels simultaneously.
+
+# Features
+
+## Signal Transmission Methods
+- **Flashlight**: Utilizes your device's camera led flashlight to transmit visual signals.
+- **Vibration**: Sends tactile signals through device vibration.
+- **Audio**: Generates clear audio tones at 700Hz frequency.
+- **Screen Light**: Maximizes screen brightness to create visual signals in darkness.
+
+## Core Capabilities
+- **Background Service**: Continue signaling even when the app is minimized or screen is locked.
+- **Message Customization**: Send any custom message in Morse code.
+- **Adjustable Speed**: Choose from slow, medium, fast, or custom transmission speeds.
+- **Morse Code Decoder**: Convert received Morse code into readable text.
+- **User Preferences**: Independently toggle each signaling method based on your needs.
+
+# Usage
+
+- **Emergency SOS**: Press the SOS button to immediately begin transmitting the international SOS signal (... --- ...).
+- **Custom Message**: Enter your text in the input field and press "Send" to convert and transmit.
+- **Decoder**: Navigate to the decoder screen to translate incoming Morse code signals.
+- **Settings**: Customize transmission speed and toggle different signaling methods.
+
+# Contribute
+
+Contributions are welcome! Feel free to open issues or submit pull requests on our GitHub repo.
+
+# License
+
+This project is licensed under the GNU General Public License (GPLv3) - see the LICENSE file for details.
+
+# Source
+
+https://github.com/WeilJimmer/SOSFlashlightApp.git
