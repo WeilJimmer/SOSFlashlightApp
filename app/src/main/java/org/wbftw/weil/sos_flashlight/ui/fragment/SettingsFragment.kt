@@ -1,4 +1,4 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,8 +9,13 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.wbftw.weil.sos_flashlight.ui.activity.MainActivity
+import org.wbftw.weil.sos_flashlight.utils.Misc
+import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
+import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.config.PreferenceValueConst
 import org.wbftw.weil.sos_flashlight.databinding.FragmentSettingsBinding
+import org.wbftw.weil.sos_flashlight.ui.viewmodel.SettingsViewModel
 
 /**
  * [SettingsFragment] is used to manage the settings of the SOS Flashlight application.
@@ -174,7 +179,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun generateCode(text: String){
-        val morseCode = MorseCodeUtils.encodeWordToMorseCode(text)
+        val morseCode = MorseCodeUtils.Companion.encodeWordToMorseCode(text)
         if (viewModel.textCode.value != morseCode){
             viewModel.textCode.value = morseCode
         }
@@ -190,7 +195,7 @@ class SettingsFragment : Fragment() {
         appContext.defaultScreenFlicker = viewModel.screenFlicker.value ?: PreferenceValueConst.SETTING_DEFAULT_SCREEN_FLICKER_VALUE
         appContext.defaultSoundOn = viewModel.soundOn.value ?: PreferenceValueConst.SETTING_DEFAULT_SOUND_ON_VALUE
         appContext.defaultVibrateOn = viewModel.vibrateOn.value ?: PreferenceValueConst.SETTING_DEFAULT_VIBRATE_ON_VALUE
-        Misc.saveSettings(appContext)
+        Misc.Companion.saveSettings(appContext)
         refreshConfig()
     }
 

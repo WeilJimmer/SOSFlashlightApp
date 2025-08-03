@@ -1,4 +1,4 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,10 +6,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
+import org.wbftw.weil.sos_flashlight.R
+import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.databinding.FragmentSecondBinding
+import org.wbftw.weil.sos_flashlight.ui.viewmodel.SecondViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
@@ -109,13 +114,13 @@ class SecondFragment : Fragment() {
 
         binding.editTextCode.setOnEditorActionListener { _, actionId, _ ->
             Log.v(TAG, "Editor action: $actionId")
-            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEND) {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
                 queueCode.clear()
                 spaceAdded = false
                 wordSpaceAdded = false
                 stopCounter()
                 val code = binding.editTextCode.text.toString()
-                viewModel.textClear.value = MorseCodeUtils.findSentenceInMorseCode(code)
+                viewModel.textClear.value = MorseCodeUtils.Companion.findSentenceInMorseCode(code)
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -127,7 +132,7 @@ class SecondFragment : Fragment() {
     private fun handleSpace(){
         Log.d(TAG, "Processing space with queueCode: $queueCode")
         val charArray = queueCode.toCharArray()
-        val morseChar = MorseCodeUtils.findCharacterInMorseCode(charArray)
+        val morseChar = MorseCodeUtils.Companion.findCharacterInMorseCode(charArray)
         if (morseChar!=null){
             queueCode.clear()
             viewModel.addClearText(morseChar)

@@ -1,8 +1,7 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.wbftw.weil.sos_flashlight.config.PreferenceKeyConst
 import org.wbftw.weil.sos_flashlight.config.PreferenceValueConst
 
 class SettingsViewModel : ViewModel() {

@@ -1,22 +1,29 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.services
 
-import android.app.*
-import android.content.Context
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+import android.content.pm.ServiceInfo
 import android.graphics.Color
 import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
+import org.wbftw.weil.sos_flashlight.R
+import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
+import org.wbftw.weil.sos_flashlight.objs.TonePlayer
 import org.wbftw.weil.sos_flashlight.config.PreferenceValueConst
+import org.wbftw.weil.sos_flashlight.ui.activity.MainActivity
 import java.util.concurrent.atomic.AtomicBoolean
-
 
 class SOSFlashlightService : Service() {
 
@@ -32,7 +39,7 @@ class SOSFlashlightService : Service() {
 
     private var sosFlashlightApp: SOSFlashlightApp? = null
 
-    private var SHORT_MS = PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE
+    private var SHORT_MS = PreferenceValueConst.Companion.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE
     private var LONG_MS = SHORT_MS * 3
     private var INTERVAL_MS = SHORT_MS * 3
     private var WORD_INTERVAL_MS = SHORT_MS * 7
@@ -72,7 +79,7 @@ class SOSFlashlightService : Service() {
     private fun refreshConfig() {
         // 重新讀取配置
         sosFlashlightApp = application as SOSFlashlightApp
-        SHORT_MS = sosFlashlightApp?.defaultIntervalShortMs ?: PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE
+        SHORT_MS = sosFlashlightApp?.defaultIntervalShortMs ?: PreferenceValueConst.Companion.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE
         LONG_MS = SHORT_MS * 3
         INTERVAL_MS = SHORT_MS * 3
         WORD_INTERVAL_MS = SHORT_MS * 7
@@ -112,7 +119,9 @@ class SOSFlashlightService : Service() {
             .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(NOTIFICATION_ID, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+            startForeground(NOTIFICATION_ID, notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+            )
         }
 
         isRunning.set(true)
@@ -155,7 +164,7 @@ class SOSFlashlightService : Service() {
                 lightColor = Color.RED
             }
 
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -173,7 +182,7 @@ class SOSFlashlightService : Service() {
     }
 
     private fun initSound() {
-        tonePlayer = TonePlayer(this, TonePlayer.DEFAULT_SOUND_TYPE_750)
+        tonePlayer = TonePlayer(this, TonePlayer.Companion.DEFAULT_SOUND_TYPE_750)
     }
 
     private fun initCamera() {
@@ -183,7 +192,7 @@ class SOSFlashlightService : Service() {
             return
         }
 
-        cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
         try {
             cameraId = cameraManager?.cameraIdList[0] // 通常第一個相機是後置相機
         } catch (e: Exception) {
@@ -248,7 +257,7 @@ class SOSFlashlightService : Service() {
         }
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibratorManager?.vibrate(android.os.VibrationEffect.createOneShot(t, android.os.VibrationEffect.EFFECT_HEAVY_CLICK))
+                vibratorManager?.vibrate(VibrationEffect.createOneShot(t, VibrationEffect.EFFECT_HEAVY_CLICK))
             } else {
                 @Suppress("DEPRECATION")
                 vibratorManager?.vibrate(t)
@@ -324,8 +333,8 @@ class SOSFlashlightService : Service() {
         sosThread = Thread {
             try {
                 while (isRunning.get()) {
-                    MorseCodeUtils.runMoseCode(
-                        moseCode=MorseCodeUtils.encodeWordToMorseCode(sosFlashlightApp?.defaultMessage ?: PreferenceValueConst.SETTING_DEFAULT_MESSAGE_VALUE ),
+                    MorseCodeUtils.Companion.runMoseCode(
+                        moseCode= MorseCodeUtils.Companion.encodeWordToMorseCode(sosFlashlightApp?.defaultMessage ?: PreferenceValueConst.Companion.SETTING_DEFAULT_MESSAGE_VALUE ),
                         dot = { dot() },
                         dash = { dash() },
                         space = { space() },

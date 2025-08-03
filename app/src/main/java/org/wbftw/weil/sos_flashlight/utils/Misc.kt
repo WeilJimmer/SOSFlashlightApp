@@ -1,7 +1,8 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.utils
 
 import android.content.Context
 import androidx.core.content.edit
+import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.config.ConfigConst
 import org.wbftw.weil.sos_flashlight.config.PreferenceKeyConst
 

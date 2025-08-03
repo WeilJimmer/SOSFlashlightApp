@@ -1,4 +1,4 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.databinding.FragmentCopyrightBinding
 
 /**
@@ -36,7 +37,10 @@ class CopyrightFragment : Fragment() {
         }
 
         binding.buttonSource.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW,"https://github.com/WeilJimmer/SOSFlashlighApp.git".toUri())
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                "https://github.com/WeilJimmer/SOSFlashlighApp.git".toUri()
+            )
             startActivity(intent)
         }
     }

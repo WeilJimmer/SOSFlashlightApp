@@ -1,8 +1,10 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.ui.activity
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -29,7 +31,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import org.wbftw.weil.sos_flashlight.utils.Misc
+import org.wbftw.weil.sos_flashlight.R
+import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
+import org.wbftw.weil.sos_flashlight.services.SOSFlashlightService
 import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
+import org.wbftw.weil.sos_flashlight.ui.fragment.FirstFragment
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : AppCompatActivity() {
@@ -78,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // 檢查權限
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
         } else {
             setupFlashlight()
         }
@@ -89,15 +96,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init(){
-        Misc.initSettings(application as SOSFlashlightApp)
+        Misc.Companion.initSettings(application as SOSFlashlightApp)
     }
 
     override fun onResume() {
         super.onResume()
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
-        val sosIntentFilter = android.content.IntentFilter().apply {
-            addAction(SOSFlashlightService.ACTION_SOS_SIGNAL)
-            addAction(SOSFlashlightService.ACTION_SOS_FINISHED)
+        val sosIntentFilter = IntentFilter().apply {
+            addAction(SOSFlashlightService.Companion.ACTION_SOS_SIGNAL)
+            addAction(SOSFlashlightService.Companion.ACTION_SOS_FINISHED)
         }
         localBroadcastManager?.registerReceiver(sosSignalReceiver, sosIntentFilter)
     }
@@ -110,13 +117,13 @@ class MainActivity : AppCompatActivity() {
     private val sosSignalReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
-                SOSFlashlightService.ACTION_SOS_SIGNAL -> {
-                    val isLightOn = intent.getBooleanExtra(SOSFlashlightService.EXTRA_LIGHT_STATE, false)
-                    val signalChar = intent.getCharExtra(SOSFlashlightService.EXTRA_MESSAGE, ' ')
+                SOSFlashlightService.Companion.ACTION_SOS_SIGNAL -> {
+                    val isLightOn = intent.getBooleanExtra(SOSFlashlightService.Companion.EXTRA_LIGHT_STATE, false)
+                    val signalChar = intent.getCharExtra(SOSFlashlightService.Companion.EXTRA_MESSAGE, ' ')
                     updateScreenColor(isLightOn)
                     updateSignalChar(signalChar)
                 }
-                SOSFlashlightService.ACTION_SOS_FINISHED -> {
+                SOSFlashlightService.Companion.ACTION_SOS_FINISHED -> {
                     resetScreen()
                     isSendingMessageRunning.set(false)
                 }
@@ -171,7 +178,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startSendMessageService() {
         val intent = Intent(this, SOSFlashlightService::class.java).apply {
-            action = SOSFlashlightService.ACTION_START_SOS
+            action = SOSFlashlightService.Companion.ACTION_START_SOS
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -185,14 +192,14 @@ class MainActivity : AppCompatActivity() {
     fun sendConfigReload() {
         Log.d(TAG, "Sending config reload")
         val intent = Intent(this, SOSFlashlightService::class.java).apply{
-            action = SOSFlashlightService.ACTION_REFRESH_CONFIG
+            action = SOSFlashlightService.Companion.ACTION_REFRESH_CONFIG
         }
         startService(intent)
     }
 
     private fun stopSendMessageService() {
         val intent = Intent(this, SOSFlashlightService::class.java).apply {
-            action = SOSFlashlightService.ACTION_STOP_SOS
+            action = SOSFlashlightService.Companion.ACTION_STOP_SOS
         }
         startService(intent)
         isSendingMessageRunning.set(false)

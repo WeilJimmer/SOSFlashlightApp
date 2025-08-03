@@ -1,6 +1,7 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.utils
 
 import android.util.Log
+import kotlin.collections.iterator
 
 class MorseCodeUtils {
 

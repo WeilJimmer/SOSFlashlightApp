@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.wbftw.weil.sos_flashlight.MainActivity">
+    tools:context="org.wbftw.weil.sos_flashlight.ui.activity.MainActivity">
     <item
         android:id="@+id/action_sos"
         android:orderInCategory="100"

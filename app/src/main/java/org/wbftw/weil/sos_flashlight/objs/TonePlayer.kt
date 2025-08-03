@@ -1,4 +1,4 @@
-package org.wbftw.weil.sos_flashlight
+package org.wbftw.weil.sos_flashlight.objs
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -6,6 +6,7 @@ import android.media.SoundPool
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import org.wbftw.weil.sos_flashlight.R
 
 class TonePlayer(private val context: Context, private var soundType: Int = DEFAULT_SOUND_TYPE_750) {
     private var soundPool: SoundPool? = null

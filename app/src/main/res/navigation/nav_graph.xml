@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="org.wbftw.weil.sos_flashlight.FirstFragment"
+        android:name="org.wbftw.weil.sos_flashlight.ui.fragment.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -24,21 +24,21 @@
 
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="org.wbftw.weil.sos_flashlight.SettingsFragment"
+        android:name="org.wbftw.weil.sos_flashlight.ui.fragment.SettingsFragment"
         android:label="@string/action_settings"
         tools:layout="@layout/fragment_settings">
     </fragment>
 
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="org.wbftw.weil.sos_flashlight.SecondFragment"
+        android:name="org.wbftw.weil.sos_flashlight.ui.fragment.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
     </fragment>
 
     <fragment
         android:id="@+id/CopyrightFragment"
-        android:name="org.wbftw.weil.sos_flashlight.CopyrightFragment"
+        android:name="org.wbftw.weil.sos_flashlight.ui.fragment.CopyrightFragment"
         android:label="Copyright"
         tools:layout="@layout/fragment_copyright">
     </fragment>
