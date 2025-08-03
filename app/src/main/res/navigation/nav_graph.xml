@@ -14,15 +14,33 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_CopyrightFragment"
+            app:destination="@id/CopyrightFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="org.wbftw.weil.sos_flashlight.SettingsFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_settings">
+    </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="org.wbftw.weil.sos_flashlight.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/CopyrightFragment"
+        android:name="org.wbftw.weil.sos_flashlight.CopyrightFragment"
+        android:label="Copyright"
+        tools:layout="@layout/fragment_copyright">
+    </fragment>
+
 </navigation>

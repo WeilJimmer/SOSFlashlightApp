@@ -1,37 +1,209 @@
 package org.wbftw.weil.sos_flashlight
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
+import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : AppCompatActivity() {
 
+    val TAG = "MainActivity"
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+    private var app: SOSFlashlightApp? = null
+    private var localBroadcastManager: LocalBroadcastManager? = null
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
+    private var isSendingMessageRunning: AtomicBoolean = AtomicBoolean(false)
+    private var rootLayout: ViewGroup? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        app = application as SOSFlashlightApp
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        val controller: WindowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.navigationBars())
+        controller.hide(WindowInsetsCompat.Type.statusBars())
+        controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
+
+        enableEdgeToEdge()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(insets.left, insets.top, insets.right, insets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
+
+        rootLayout = binding.root
+        navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+        // 檢查權限
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            setupFlashlight()
+        }
+
+        init()
+
+    }
+
+    private fun init(){
+        Misc.initSettings(application as SOSFlashlightApp)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
+        val sosIntentFilter = android.content.IntentFilter().apply {
+            addAction(SOSFlashlightService.ACTION_SOS_SIGNAL)
+            addAction(SOSFlashlightService.ACTION_SOS_FINISHED)
+        }
+        localBroadcastManager?.registerReceiver(sosSignalReceiver, sosIntentFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        localBroadcastManager?.unregisterReceiver(sosSignalReceiver)
+    }
+
+    private val sosSignalReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                SOSFlashlightService.ACTION_SOS_SIGNAL -> {
+                    val isLightOn = intent.getBooleanExtra(SOSFlashlightService.EXTRA_LIGHT_STATE, false)
+                    val signalChar = intent.getCharExtra(SOSFlashlightService.EXTRA_MESSAGE, ' ')
+                    updateScreenColor(isLightOn)
+                    updateSignalChar(signalChar)
+                }
+                SOSFlashlightService.ACTION_SOS_FINISHED -> {
+                    resetScreen()
+                    isSendingMessageRunning.set(false)
+                }
+            }
+        }
+    }
+
+
+    private fun updateScreenColor(isLightOn: Boolean) {
+        if (app?.defaultScreenFlicker != true){
+            Log.v(TAG, "Screen flicker is disabled, not updating screen color.")
+            return
+        }
+        if (isLightOn) {
+            rootLayout?.setBackgroundColor(Color.RED)
+            //set action bar color
+            supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.red))
+        } else {
+            rootLayout?.setBackgroundColor(Color.BLACK)
+            supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.black))
+        }
+    }
+
+    private fun updateSignalChar(signalChar: Char) {
+        Log.d(TAG, "Updating signal character: $signalChar")
+        val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)?.childFragmentManager?.fragments?.firstOrNull()
+        if (fragment is FirstFragment) {
+            fragment.updateSignalChar(signalChar)
+        }
+    }
+
+    private fun resetScreen() {
+        Log.d(TAG, "Resetting screen color to default")
+        val isDarkMode = (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        if (isDarkMode) {
+            rootLayout?.setBackgroundColor(ContextCompat.getColor(this, android.R.color.background_dark))
+            supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.black))
+        } else {
+            rootLayout?.setBackgroundColor(ContextCompat.getColor(this, android.R.color.background_light))
+            supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.white))
+        }
+    }
+
+
+    fun toggleSendingMessage() {
+        if (!isSendingMessageRunning.get()) {
+            startSendMessageService()
+        } else {
+            stopSendMessageService()
+        }
+    }
+
+    private fun startSendMessageService() {
+        val intent = Intent(this, SOSFlashlightService::class.java).apply {
+            action = SOSFlashlightService.ACTION_START_SOS
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
+        isSendingMessageRunning.set(true)
+    }
+
+    fun sendConfigReload() {
+        Log.d(TAG, "Sending config reload")
+        val intent = Intent(this, SOSFlashlightService::class.java).apply{
+            action = SOSFlashlightService.ACTION_REFRESH_CONFIG
+        }
+        startService(intent)
+    }
+
+    private fun stopSendMessageService() {
+        val intent = Intent(this, SOSFlashlightService::class.java).apply {
+            action = SOSFlashlightService.ACTION_STOP_SOS
+        }
+        startService(intent)
+        isSendingMessageRunning.set(false)
+    }
+
+
+    private fun setupFlashlight() {
+        // 檢查設備是否有閃光燈
+        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+            Toast.makeText(this, "此設備沒有閃光燈", Toast.LENGTH_SHORT).show()
+            return
         }
     }
 
@@ -42,18 +214,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_sos -> {
+                navController.navigate(R.id.FirstFragment)
+                Log.d(TAG, "Navigating to SOS")
+                true
+            }
+            R.id.action_settings -> {
+                navController.navigate(R.id.SettingsFragment)
+                Log.d(TAG, "Navigating to settings")
+                true
+            }
+            R.id.action_message_encoder -> {
+                navController.navigate(R.id.SecondFragment)
+                Log.d(TAG, "Navigating to code reader")
+                true
+            }
+            R.id.action_copyright -> {
+                navController.navigate(R.id.CopyrightFragment)
+                Log.d(TAG, "Navigating to copyright")
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
