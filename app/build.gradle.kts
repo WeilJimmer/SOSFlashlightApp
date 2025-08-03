@@ -25,6 +25,23 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            applicationIdSuffix = ".dev"
+            isDebuggable = true
+            resValue("string", "app_name", "@string/app_name_dev")
+            buildConfigField("Boolean","DEBUG","true")
+        }
+    }
+    applicationVariants.all {
+        val variant = this
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                val outputFileName = "${applicationId}_${variant.buildType.name}_${variant.versionName}.apk"
+                output.outputFileName = outputFileName
+            }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
