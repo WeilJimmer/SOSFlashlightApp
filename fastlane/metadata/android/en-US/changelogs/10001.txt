@@ -1,0 +1,3 @@
+# SOS Flashlight v1.0.1 (10001) - Minor Update
+
+- Fix: Adjust interval limits and update dependencies.
