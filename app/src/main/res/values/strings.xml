@@ -25,4 +25,7 @@
     <string name="code_stop">Stop</string>
     <string name="code_notification_sos_signal_title">SOS Signal</string>
     <string name="code_notification_sos_signal_description">It\'s sending SOS signal...</string>
+    <string name="code_flashlight_permission_message">We cannot using flashlight without camera permission, please grant it.</string>
+    <string name="code_notification_permission_message">We cannot send notifications without permission, please allow it in settings.</string>
+    <string name="code_feature_no_flashlight_message">This device does not have a flashlight.</string>
 </resources>

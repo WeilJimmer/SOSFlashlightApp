@@ -1,5 +1,6 @@
 package org.wbftw.weil.sos_flashlight.services
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.graphics.Color
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.IBinder
@@ -15,7 +17,9 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
 import org.wbftw.weil.sos_flashlight.R
@@ -51,6 +55,8 @@ class SOSFlashlightService : Service() {
     override fun onCreate() {
         super.onCreate()
 
+        Log.v(TAG, "$TAG onCreate called")
+
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
             Toast.makeText(this, "No flashlight detected!", Toast.LENGTH_SHORT).show()
@@ -60,6 +66,8 @@ class SOSFlashlightService : Service() {
         initVibrator()
         initCamera()
         initSound()
+
+        Log.v(TAG, "$TAG onCreate completed")
 
     }
 
@@ -72,7 +80,7 @@ class SOSFlashlightService : Service() {
                 Log.w(TAG, "Received unknown action: ${intent?.action}")
             }
         }
-
+        Log.v(TAG, "Service started with action: ${intent?.action}")
         return START_STICKY
     }
 
@@ -102,10 +110,7 @@ class SOSFlashlightService : Service() {
         )
 
         val openAppIntent = Intent(this, MainActivity::class.java)
-        val openAppPendingIntent = PendingIntent.getActivity(
-            this, 0, openAppIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
+        val openAppPendingIntent = PendingIntent.getActivity(this, 0, openAppIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.code_notification_sos_signal_title))
@@ -119,9 +124,7 @@ class SOSFlashlightService : Service() {
             .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(NOTIFICATION_ID, notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-            )
+            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
         }
 
         isRunning.set(true)
@@ -156,10 +159,10 @@ class SOSFlashlightService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "SOS閃光燈服務",
+                "SOS Flashlight Channel",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "用於SOS緊急信號的通知渠道"
+                description = "Channel for SOS Flashlight notifications"
                 enableLights(true)
                 lightColor = Color.RED
             }
@@ -194,7 +197,9 @@ class SOSFlashlightService : Service() {
 
         cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
         try {
-            cameraId = cameraManager?.cameraIdList[0] // 通常第一個相機是後置相機
+            cameraId = cameraManager?.cameraIdList?.firstOrNull {
+                cameraManager?.getCameraCharacteristics(it)?.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

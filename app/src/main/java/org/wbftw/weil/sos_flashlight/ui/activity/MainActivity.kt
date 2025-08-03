@@ -1,6 +1,5 @@
 package org.wbftw.weil.sos_flashlight.ui.activity
 
-import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,10 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -39,7 +35,7 @@ import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
 import org.wbftw.weil.sos_flashlight.ui.fragment.MainFragment
 import java.util.concurrent.atomic.AtomicBoolean
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     val TAG = "MainActivity"
 
@@ -84,12 +80,9 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // 檢查權限
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
-        } else {
-            setupFlashlight()
-        }
+        checkFlashlight()
+
+        requestNotificationPermission()
 
         init()
 
@@ -178,6 +171,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSendMessageService() {
+        requestNotificationPermission()
+
         val intent = Intent(this, SOSFlashlightService::class.java).apply {
             action = SOSFlashlightService.Companion.ACTION_START_SOS
         }
@@ -207,10 +202,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setupFlashlight() {
-        // 檢查設備是否有閃光燈
+    private fun checkFlashlight() {
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-            Toast.makeText(this, "此設備沒有閃光燈", Toast.LENGTH_SHORT).show()
+            toastLong(getString(R.string.code_feature_no_flashlight_message))
             return
         }
     }

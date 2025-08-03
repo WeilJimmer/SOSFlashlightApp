@@ -13,7 +13,6 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/textview_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
@@ -21,6 +20,17 @@
             android:layout_margin="16sp"
             android:textAlignment="center"
             android:text="@string/copyright_text" />
+
+        <TextView
+            android:id="@+id/textview_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:layout_margin="16sp"
+            android:textAlignment="center"
+            tools:text = "Version: 1.0.0"
+            tools:ignore="HardcodedText" />
 
         <LinearLayout
             style="?android:attr/buttonBarStyle"

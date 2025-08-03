@@ -40,7 +40,7 @@
         android:id="@+id/CopyrightFragment"
         android:name="org.wbftw.weil.sos_flashlight.ui.fragment.AboutFragment"
         android:label="Copyright"
-        tools:layout="@layout/fragment_copyright">
+        tools:layout="@layout/fragment_about">
     </fragment>
 
 </navigation>
