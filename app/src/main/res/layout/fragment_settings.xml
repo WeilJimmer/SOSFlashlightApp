@@ -68,7 +68,7 @@
                 android:singleLine="true"
                 android:minLines="1"
                 android:maxLines="1"
-                android:maxLength="5"
+                android:maxLength="4"
                 android:hint="250"
                 android:text="250" />
 

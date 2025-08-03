@@ -6,6 +6,7 @@ import android.media.SoundPool
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import org.wbftw.weil.sos_flashlight.BuildConfig
 import org.wbftw.weil.sos_flashlight.R
 
 class TonePlayer(private val context: Context, private var soundType: Int = DEFAULT_SOUND_TYPE_750) {
@@ -55,8 +56,12 @@ class TonePlayer(private val context: Context, private var soundType: Int = DEFA
     fun playTone(durationMs: Long = 250) {
         Log.d(TAG, "playTone: soundType=$soundType, durationMs=$durationMs")
         soundPool?.let { pool ->
-            // 播放音效，返回的streamId可用於控制這個特定的播放實例
-            streamId = pool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f)
+            val defaultVolume = if (BuildConfig.DEBUG){
+                0.1f
+            }else{
+                1.0f
+            }
+            streamId = pool.play(soundId, defaultVolume, defaultVolume, 1, 1, 1.0f)
 
             // 設定計時器在指定時間後停止播放
             handler.postDelayed({

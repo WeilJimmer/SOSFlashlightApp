@@ -11,9 +11,8 @@ android {
         applicationId = "org.wbftw.weil.sos_flashlight"
         minSdk = 23
         targetSdk = 36
-        versionCode = 10000
-        versionName = "1.0.0"
-
+        versionCode = 10001
+        versionName = "1.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -61,7 +60,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
