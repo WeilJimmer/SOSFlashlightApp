@@ -223,6 +223,12 @@ class MainActivity : BaseActivity() {
             R.id.action_sos -> {
                 navController.navigate(R.id.FirstFragment)
                 Log.d(TAG, "Navigating to SOS")
+                if (navController.currentDestination?.id == R.id.FirstFragment) {
+                    Log.d(TAG, "Already in SOS fragment, no need to navigate")
+                    toastShort("Already in SOS fragment")
+                } else {
+                    Log.d(TAG, "Navigating to SOS fragment")
+                }
                 true
             }
             R.id.action_settings -> {
