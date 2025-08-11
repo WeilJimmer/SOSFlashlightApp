@@ -5,6 +5,9 @@ SOS Flashlight App transforms your smartphone into a powerful Morse code signali
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://www.android.com/)
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://android-arsenal.com/api?level=23)
+[<img src="https://shields.rbtlog.dev/simple/org.wbftw.weil.sos_flashlight" alt="RB shield">](https://shields.rbtlog.dev/org.wbftw.weil.sos_flashlight)
+
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/org.wbftw.weil.sos_flashlight)
 
 ## Features
 
