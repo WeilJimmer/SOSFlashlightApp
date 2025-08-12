@@ -12,7 +12,7 @@ SOS Flashlight App transforms your smartphone into a powerful Morse code signali
 
 [<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-google-play.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=org.wbftw.weil.sos_flashlight)
 [<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-github.png" alt="Get it on Github" height="80">](https://github.com/WeilJimmer/SOSFlashlightApp/releases)
-[<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-fdroid.png" alt="Get it on Fdroid" height="80">](https://f-droid.org/packages/org.wbftw.weil.passwordgenerator/)
+[<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-fdroid.png" alt="Get it on Fdroid" height="80">](https://f-droid.org/packages/org.wbftw.weil.sos_flashlight/)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/org.wbftw.weil.sos_flashlight)
 
 ## Features
