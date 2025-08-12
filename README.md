@@ -3,10 +3,16 @@
 SOS Flashlight App transforms your smartphone into a powerful Morse code signaling device, capable of transmitting emergency messages or custom text through multiple channels simultaneously.
 
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://www.android.com/)
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![GitHub License](https://img.shields.io/github/license/WeilJimmer/SOSFlashlightApp)](LICENSE)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://android-arsenal.com/api?level=23)
+[![GitHub Release](https://img.shields.io/github/v/release/WeilJimmer/PasswordGeneratorApp)](https://github.com/WeilJimmer/SOSFlashlightApp/releases)
 [<img src="https://shields.rbtlog.dev/simple/org.wbftw.weil.sos_flashlight" alt="RB shield">](https://shields.rbtlog.dev/org.wbftw.weil.sos_flashlight)
 
+## Downloads
+
+[<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-google-play.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=org.wbftw.weil.sos_flashlight)
+[<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-github.png" alt="Get it on Github" height="80">](https://github.com/WeilJimmer/SOSFlashlightApp/releases)
+[<img src="https://wbreader.weil.app.wbftw.org/images/get-it-on-fdroid.png" alt="Get it on Fdroid" height="80">](https://f-droid.org/packages/org.wbftw.weil.passwordgenerator/)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/org.wbftw.weil.sos_flashlight)
 
 ## Features
@@ -63,10 +69,6 @@ This project is licensed under the GNU General Public License (GPLv3) - see the 
 # SOS 手電筒: 進階摩斯電碼通訊工具
 
 SOS 手電筒 App 將您的智慧型手機轉變為摩斯電碼信號裝置，能夠同時通過多種管道傳輸緊急訊息或自定義文字。
-
-[![平台](https://img.shields.io/badge/平台-Android-green.svg)](https://www.android.com/)
-[![授權](https://img.shields.io/badge/授權-GPLv3-blue.svg)](LICENSE)
-[![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://android-arsenal.com/api?level=23)
 
 ## 功能特色
 
