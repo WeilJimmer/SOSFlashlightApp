@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
 import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.databinding.FragmentCodeReaderBinding
-import org.wbftw.weil.sos_flashlight.ui.viewmodel.SecondViewModel
+import org.wbftw.weil.sos_flashlight.ui.viewmodel.CodeReaderViewModel
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
@@ -27,9 +27,7 @@ class CodeReaderFragment : Fragment() {
     val TAG = "SecondFragment"
 
     private var _binding: FragmentCodeReaderBinding? = null
-    private val viewModel: SecondViewModel by lazy {
-        ViewModelProvider(this).get(SecondViewModel::class.java)
-    }
+    private val viewModel: CodeReaderViewModel by viewModels()
     private var lastBeepStartTime: Long = -1L
     private var queueCode: MutableList<Char> = mutableListOf()
     private var spaceAdded: Boolean = false
@@ -37,8 +35,6 @@ class CodeReaderFragment : Fragment() {
 
     private var mTimeExecutorService: ScheduledExecutorService? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

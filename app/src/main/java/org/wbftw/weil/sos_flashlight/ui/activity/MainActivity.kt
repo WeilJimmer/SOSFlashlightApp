@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -27,13 +28,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import org.wbftw.weil.sos_flashlight.utils.Misc
 import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
-import org.wbftw.weil.sos_flashlight.services.SOSFlashlightService
 import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
+import org.wbftw.weil.sos_flashlight.services.SOSFlashlightService
 import org.wbftw.weil.sos_flashlight.ui.fragment.MainFragment
+import org.wbftw.weil.sos_flashlight.ui.viewmodel.MainActivityViewModel
 import org.wbftw.weil.sos_flashlight.utils.BrightControl
+import org.wbftw.weil.sos_flashlight.utils.Misc
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : BaseActivity() {
@@ -45,9 +47,9 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
     private var app: SOSFlashlightApp? = null
     private var localBroadcastManager: LocalBroadcastManager? = null
-    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     private var isSendingMessageRunning: AtomicBoolean = AtomicBoolean(false)
     private var rootLayout: ViewGroup? = null
+    private val activityViewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +83,10 @@ class MainActivity : BaseActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            activityViewModel.currentDestination.value = destination.id
+            Log.d(TAG, "Current destination changed to: ${destination.label} (${destination.id})")
+        }
         checkFlashlight()
 
         requestNotificationPermission()
@@ -218,32 +223,42 @@ class MainActivity : BaseActivity() {
         return true
     }
 
+    /**
+     * Navigates to a fragment with the specified target ID.
+     * @param target The ID of the target fragment to navigate to.
+     * @param label An optional label for the target fragment, used for logging and user feedback.
+     */
+    fun navigateToFragment(target: Int, label: String? = null) {
+        Log.d(TAG, "Navigating to fragment with ID: $target, label: $label")
+        if (activityViewModel.currentDestination.value == target) {
+            Log.d(TAG, "Already in target fragment, no need to navigate")
+            toastShort("Already in $label fragment")
+        } else {
+            Log.d(TAG, "Navigating to target fragment")
+            navController.navigate(target)
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_sos -> {
-                navController.navigate(R.id.FirstFragment)
-                Log.d(TAG, "Navigating to SOS")
-                if (navController.currentDestination?.id == R.id.FirstFragment) {
-                    Log.d(TAG, "Already in SOS fragment, no need to navigate")
-                    toastShort("Already in SOS fragment")
-                } else {
-                    Log.d(TAG, "Navigating to SOS fragment")
-                }
+                navigateToFragment(R.id.FirstFragment, "SOS")
+                true
+            }
+            R.id.action_screen_light -> {
+                navigateToFragment(R.id.ScreenLightFragment, "Screen Light")
                 true
             }
             R.id.action_settings -> {
-                navController.navigate(R.id.SettingsFragment)
-                Log.d(TAG, "Navigating to settings")
+                navigateToFragment(R.id.SettingsFragment, "Settings")
                 true
             }
             R.id.action_message_encoder -> {
-                navController.navigate(R.id.SecondFragment)
-                Log.d(TAG, "Navigating to code reader")
+                navigateToFragment(R.id.CodeReaderFragment, "Message Encoder")
                 true
             }
             R.id.action_copyright -> {
-                navController.navigate(R.id.CopyrightFragment)
-                Log.d(TAG, "Navigating to copyright")
+                navigateToFragment(R.id.CopyrightFragment, "About")
                 true
             }
             else -> super.onOptionsItemSelected(item)

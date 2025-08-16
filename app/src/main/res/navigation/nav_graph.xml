@@ -13,13 +13,16 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/CodeReaderFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_CopyrightFragment"
             app:destination="@id/CopyrightFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_SettingsFragment"
             app:destination="@id/SettingsFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_ScreenLightFragment"
+            app:destination="@id/ScreenLightFragment" />
     </fragment>
 
     <fragment
@@ -30,7 +33,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/CodeReaderFragment"
         android:name="org.wbftw.weil.sos_flashlight.ui.fragment.CodeReaderFragment"
         android:label="@string/code_reader_fragment_label"
         tools:layout="@layout/fragment_code_reader">
@@ -41,6 +44,13 @@
         android:name="org.wbftw.weil.sos_flashlight.ui.fragment.AboutFragment"
         android:label="Copyright"
         tools:layout="@layout/fragment_about">
+    </fragment>
+
+    <fragment
+        android:id="@+id/ScreenLightFragment"
+        android:name="org.wbftw.weil.sos_flashlight.ui.fragment.ScreenLightFragment"
+        android:label="@string/action_screen_light"
+        tools:layout="@layout/fragment_screen_light">
     </fragment>
 
 </navigation>

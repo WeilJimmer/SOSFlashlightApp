@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.wbftw.weil.sos_flashlight.config.PreferenceValueConst
 
-class SecondViewModel : ViewModel() {
+class CodeReaderViewModel : ViewModel() {
     val textCode = MutableLiveData<String>().apply {
         value = "... --- ... /... --- ... /" // Default value for SOS in Morse code
     }
