@@ -5,7 +5,7 @@ SOS Flashlight App transforms your smartphone into a powerful Morse code signali
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://www.android.com/)
 [![GitHub License](https://img.shields.io/github/license/WeilJimmer/SOSFlashlightApp)](LICENSE)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://android-arsenal.com/api?level=23)
-[![GitHub Release](https://img.shields.io/github/v/release/WeilJimmer/PasswordGeneratorApp)](https://github.com/WeilJimmer/SOSFlashlightApp/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/WeilJimmer/SOSFlashlightApp)](https://github.com/WeilJimmer/SOSFlashlightApp/releases)
 [<img src="https://shields.rbtlog.dev/simple/org.wbftw.weil.sos_flashlight" alt="RB shield">](https://shields.rbtlog.dev/org.wbftw.weil.sos_flashlight)
 
 ## Downloads
