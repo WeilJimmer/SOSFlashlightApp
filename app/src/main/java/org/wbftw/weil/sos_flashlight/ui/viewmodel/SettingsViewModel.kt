@@ -14,6 +14,9 @@ class SettingsViewModel : ViewModel() {
     val interval = MutableLiveData<Long>().apply {
         value = PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE // Default interval for Morse code transmission
     }
+    val screenColor = MutableLiveData<String>().apply {
+        value = PreferenceValueConst.SETTING_DEFAULT_SCREEN_COLOR_VALUE // Default screen color
+    }
     val flashlightOn = MutableLiveData<Boolean>().apply {
         value = PreferenceValueConst.SETTING_DEFAULT_FLASHLIGHT_ON_VALUE // Default flashlight on setting
     }

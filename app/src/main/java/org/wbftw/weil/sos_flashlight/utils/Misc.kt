@@ -1,10 +1,12 @@
 package org.wbftw.weil.sos_flashlight.utils
 
 import android.content.Context
+import android.graphics.Color
 import androidx.core.content.edit
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.config.ConfigConst
 import org.wbftw.weil.sos_flashlight.config.PreferenceKeyConst
+import androidx.core.graphics.toColorInt
 
 /**
  * Utility class for managing settings in the SOS Flashlight application.
@@ -50,6 +52,7 @@ class Misc {
         fun initSettings(app: SOSFlashlightApp) {
             app.defaultIntervalShortMs = getSettingConfig(app, PreferenceKeyConst.SETTING_INTERVAL_SHORT_MS_LONG, app.defaultIntervalShortMs) as Long
             app.defaultMessage = getSettingConfig(app, PreferenceKeyConst.SETTING_MESSAGE_STRING, app.defaultMessage) as String
+            app.defaultScreenColor = getSettingConfig(app, PreferenceKeyConst.SETTING_SCREEN_COLOR_STRING, app.defaultScreenColor) as String
             app.defaultFlashlightOn = getSettingConfig(app, PreferenceKeyConst.SETTING_FLASHLIGHT_ON_BOOLEAN, app.defaultFlashlightOn) as Boolean
             app.defaultScreenFlicker = getSettingConfig(app, PreferenceKeyConst.SETTING_SCREEN_LIGHT_BOOLEAN, app.defaultScreenFlicker) as Boolean
             app.defaultSoundOn = getSettingConfig(app, PreferenceKeyConst.SETTING_SOUND_ON_BOOLEAN, app.defaultSoundOn) as Boolean
@@ -59,10 +62,33 @@ class Misc {
         fun saveSettings(app: SOSFlashlightApp) {
             setSettingConfig(app, PreferenceKeyConst.SETTING_INTERVAL_SHORT_MS_LONG, app.defaultIntervalShortMs)
             setSettingConfig(app, PreferenceKeyConst.SETTING_MESSAGE_STRING, app.defaultMessage)
+            setSettingConfig(app, PreferenceKeyConst.SETTING_SCREEN_COLOR_STRING, app.defaultScreenColor)
             setSettingConfig(app, PreferenceKeyConst.SETTING_FLASHLIGHT_ON_BOOLEAN, app.defaultFlashlightOn)
             setSettingConfig(app, PreferenceKeyConst.SETTING_SCREEN_LIGHT_BOOLEAN, app.defaultScreenFlicker)
             setSettingConfig(app, PreferenceKeyConst.SETTING_SOUND_ON_BOOLEAN, app.defaultSoundOn)
             setSettingConfig(app, PreferenceKeyConst.SETTING_VIBRATE_ON_BOOLEAN, app.defaultVibrateOn)
+        }
+
+        fun colorHex2ColorInt(colorHex: String): Int {
+            return try {
+                colorHex.toColorInt()
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+                Color.WHITE
+            }
+        }
+
+        fun colorInt2ColorHex(colorInt: Int): String {
+            return String.format("#FF%06X", 0xFFFFFF and colorInt)
+        }
+
+        fun isValidColorHex(colorHex: String): Boolean {
+            return try {
+                colorHex.toColorInt()
+                true
+            } catch (e: IllegalArgumentException) {
+                false
+            }
         }
 
     }

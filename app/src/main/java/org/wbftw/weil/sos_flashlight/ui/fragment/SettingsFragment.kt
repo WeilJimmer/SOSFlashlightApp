@@ -6,9 +6,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.github.skydoves.colorpicker.compose.BrightnessSlider
+import com.github.skydoves.colorpicker.compose.HsvColorPicker
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.ui.activity.MainActivity
 import org.wbftw.weil.sos_flashlight.utils.Misc
@@ -59,6 +77,7 @@ class SettingsFragment : Fragment() {
     private fun readConfig(app: SOSFlashlightApp) {
         viewModel.textClear.value = app.defaultMessage
         viewModel.interval.value = app.defaultIntervalShortMs
+        viewModel.screenColor.value = app.defaultScreenColor
         viewModel.flashlightOn.value = app.defaultFlashlightOn
         viewModel.screenFlicker.value = app.defaultScreenFlicker
         viewModel.soundOn.value = app.defaultSoundOn
@@ -75,6 +94,8 @@ class SettingsFragment : Fragment() {
         }
 
         binding.editTextShortInterval.setText(viewModel.interval.value?.toString() ?: PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE.toString())
+
+        binding.editTextScreenColor.setText(viewModel.screenColor.value)
 
         viewModel.textCode.observe(viewLifecycleOwner) { code ->
             binding.editTextCode.text = code
@@ -100,6 +121,7 @@ class SettingsFragment : Fragment() {
     /**
      * Sets up the event listeners for UI elements to handle user input and save settings.
      */
+    @SuppressLint("ClickableViewAccessibility")
     private fun setUIEvent(){
         binding.editTextClear.addTextChangedListener {
             val newString = it.toString()
@@ -122,6 +144,14 @@ class SettingsFragment : Fragment() {
                     viewModel.interval.value = PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE
                 }
                 saveSettings(2)
+            }
+        }
+
+        binding.editTextScreenColor.addTextChangedListener {
+            val input = it.toString()
+            if (input.isNotEmpty() && Misc.isValidColorHex(input)) {
+                viewModel.screenColor.value = input
+                saveSettings(7)
             }
         }
 
@@ -155,8 +185,14 @@ class SettingsFragment : Fragment() {
     /**
      * Sets up the click listeners for the buttons to change the interval values and reset settings.
      */
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     private fun setButtonEvent() {
+        binding.editTextScreenColor.setOnTouchListener { v, e ->
+            when(e.action){
+                android.view.MotionEvent.ACTION_UP -> showColorPickerDialog()
+            }
+            true
+        }
         binding.buttonSlow.setOnClickListener {
             binding.editTextShortInterval.setText("350")
         }
@@ -169,6 +205,7 @@ class SettingsFragment : Fragment() {
         binding.buttonReset.setOnClickListener {
             binding.editTextClear.setText(PreferenceValueConst.SETTING_DEFAULT_MESSAGE_VALUE)
             binding.editTextShortInterval.setText(PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE.toString())
+            binding.editTextScreenColor.setText(PreferenceValueConst.SETTING_DEFAULT_SCREEN_COLOR_VALUE)
             binding.checkBoxFlashlight.isChecked = PreferenceValueConst.SETTING_DEFAULT_FLASHLIGHT_ON_VALUE
             binding.checkBoxScreen.isChecked = PreferenceValueConst.SETTING_DEFAULT_SCREEN_FLICKER_VALUE
             binding.checkBoxSound.isChecked = PreferenceValueConst.SETTING_DEFAULT_SOUND_ON_VALUE
@@ -179,6 +216,49 @@ class SettingsFragment : Fragment() {
             BaseActivity.toastShort(requireContext(), getString(R.string.code_save_successful))
             Log.d(TAG, "Settings saved successfully.")
         }
+    }
+
+    private fun showColorPickerDialog(colorHex: String = "#FFFF0000"){
+        val composeView = ComposeView(requireContext()).apply {
+            setContent {
+                val controller = rememberColorPickerController()
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    HsvColorPicker(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(400.dp)
+                            .padding(16.dp),
+                        controller = controller,
+                        initialColor = Color(Misc.colorHex2ColorInt(binding.editTextScreenColor.text.toString())),
+                        onColorChanged = { colorEnvelope ->
+                            val hexColor = "#${colorEnvelope.hexCode}".uppercase()
+                            binding.editTextScreenColor.setText(hexColor)
+                            Log.d(TAG, "Selected color: $hexColor")
+                        }
+                    )
+                    BrightnessSlider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .height(35.dp),
+                        controller = controller,
+                    )
+                }
+            }
+        }
+        val ab = AlertDialog.Builder(requireContext())
+            .setTitle("Select Screen Color")
+            .setView(composeView)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+        ab.show()
     }
 
     private fun generateCode(text: String){
@@ -194,6 +274,7 @@ class SettingsFragment : Fragment() {
         val appContext = requireContext().applicationContext as SOSFlashlightApp
         appContext.defaultMessage = viewModel.textClear.value ?: PreferenceValueConst.SETTING_DEFAULT_MESSAGE_VALUE
         appContext.defaultIntervalShortMs = viewModel.interval.value ?: PreferenceValueConst.SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE
+        appContext.defaultScreenColor = viewModel.screenColor.value ?: PreferenceValueConst.SETTING_DEFAULT_SCREEN_COLOR_VALUE
         appContext.defaultFlashlightOn = viewModel.flashlightOn.value ?: PreferenceValueConst.SETTING_DEFAULT_FLASHLIGHT_ON_VALUE
         appContext.defaultScreenFlicker = viewModel.screenFlicker.value ?: PreferenceValueConst.SETTING_DEFAULT_SCREEN_FLICKER_VALUE
         appContext.defaultSoundOn = viewModel.soundOn.value ?: PreferenceValueConst.SETTING_DEFAULT_SOUND_ON_VALUE

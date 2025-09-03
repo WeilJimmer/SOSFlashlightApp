@@ -106,6 +106,29 @@
 
         </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Screen light color: (hex)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextScreenColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="true"
+                android:fontFamily="monospace"
+                android:hint="#FFFF0000"
+                android:inputType="none"
+                android:maxLength="9"
+                android:maxLines="1"
+                android:minLines="1"
+                android:singleLine="true"
+                android:text="#FFFF0000" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

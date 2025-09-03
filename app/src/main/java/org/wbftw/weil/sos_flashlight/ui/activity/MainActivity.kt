@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +31,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
+import org.wbftw.weil.sos_flashlight.config.PreferenceValueConst
 import org.wbftw.weil.sos_flashlight.databinding.ActivityMainBinding
 import org.wbftw.weil.sos_flashlight.services.SOSFlashlightService
 import org.wbftw.weil.sos_flashlight.ui.fragment.MainFragment
@@ -37,6 +39,7 @@ import org.wbftw.weil.sos_flashlight.ui.viewmodel.MainActivityViewModel
 import org.wbftw.weil.sos_flashlight.utils.BrightControl
 import org.wbftw.weil.sos_flashlight.utils.Misc
 import java.util.concurrent.atomic.AtomicBoolean
+import androidx.core.graphics.drawable.toDrawable
 
 class MainActivity : BaseActivity() {
 
@@ -138,9 +141,9 @@ class MainActivity : BaseActivity() {
             return
         }
         if (isLightOn) {
-            rootLayout?.setBackgroundColor(Color.RED)
-            //set action bar color
-            supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.red))
+            val color: Int = Misc.colorHex2ColorInt(app?.defaultScreenColor ?: PreferenceValueConst.SETTING_DEFAULT_SCREEN_COLOR_VALUE)
+            rootLayout?.setBackgroundColor(color)
+            supportActionBar?.setBackgroundDrawable(color.toDrawable())
         } else {
             rootLayout?.setBackgroundColor(Color.BLACK)
             supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.black))

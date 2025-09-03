@@ -10,6 +10,8 @@ class PreferenceValueConst {
         const val SETTING_DEFAULT_INTERVAL_SHORT_MS_VALUE = 250L
         /** Default value for default message in Clear Message */
         const val SETTING_DEFAULT_MESSAGE_VALUE = "SOS"
+        /** Default value for default screen color */
+        const val SETTING_DEFAULT_SCREEN_COLOR_VALUE = "#FFFF0000" // Red
         /** Default value for default flashlight on */
         const val SETTING_DEFAULT_FLASHLIGHT_ON_VALUE = true
         /** Default value for default screen flicker */

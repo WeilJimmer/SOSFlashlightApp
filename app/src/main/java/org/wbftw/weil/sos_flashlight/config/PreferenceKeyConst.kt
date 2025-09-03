@@ -10,6 +10,8 @@ class PreferenceKeyConst {
         const val SETTING_INTERVAL_SHORT_MS_LONG = "setting_default_interval_short_ms"
         /** Default Key for default message in Clear Message */
         const val SETTING_MESSAGE_STRING = "setting_default_message"
+        /** Default Key for default screen color */
+        const val SETTING_SCREEN_COLOR_STRING = "setting_default_screen_color"
         /** Default Key for default flashlight on */
         const val SETTING_FLASHLIGHT_ON_BOOLEAN = "setting_default_flashlight_on"
         /** Default Key for default screen flicker */
