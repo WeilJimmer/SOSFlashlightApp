@@ -1,6 +1,7 @@
 package org.wbftw.weil.sos_flashlight.ui.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -16,6 +17,18 @@ open class BaseActivity : AppCompatActivity() {
     private val TAG = "BaseActivity"
     private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1002
+
+    companion object {
+
+        fun toastShort(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+
+        fun toastLong(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
+
+    }
 
     fun toastShort(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

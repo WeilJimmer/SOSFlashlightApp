@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.wbftw.weil.sos_flashlight.R
 import org.wbftw.weil.sos_flashlight.ui.activity.MainActivity
 import org.wbftw.weil.sos_flashlight.utils.Misc
 import org.wbftw.weil.sos_flashlight.utils.MorseCodeUtils
 import org.wbftw.weil.sos_flashlight.SOSFlashlightApp
 import org.wbftw.weil.sos_flashlight.config.PreferenceValueConst
 import org.wbftw.weil.sos_flashlight.databinding.FragmentSettingsBinding
+import org.wbftw.weil.sos_flashlight.ui.activity.BaseActivity
 import org.wbftw.weil.sos_flashlight.ui.viewmodel.SettingsViewModel
 
 /**
@@ -174,6 +176,7 @@ class SettingsFragment : Fragment() {
         }
         binding.buttonSave.setOnClickListener {
             saveSettings()
+            BaseActivity.toastShort(requireContext(), getString(R.string.code_save_successful))
             Log.d(TAG, "Settings saved successfully.")
         }
     }
