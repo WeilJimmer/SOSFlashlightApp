@@ -1,0 +1,4 @@
+# SOS Flashlight v1.0.3 (10003) - Minor Update
+
+- Added: Screen Light color selection feature, now you can change the screen light color through the color palette.
+- Fixed: Allow the use of longer time intervals to enable normal vibration for devices that cannot vibrate in extremely short periods of time.

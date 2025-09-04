@@ -136,7 +136,7 @@ class SettingsFragment : Fragment() {
             if (input.isNotEmpty()) {
                 try {
                     val interval = input.toLong()
-                    if (interval >= 10 && interval <= 1000) {
+                    if (interval >= 10 && interval <= 2000) {
                         viewModel.interval.value = interval
                     }
                 } catch (e: NumberFormatException) {

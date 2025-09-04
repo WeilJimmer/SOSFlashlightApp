@@ -285,7 +285,7 @@ class SOSFlashlightService : Service() {
     }
 
     private fun signalOn(t: Long) {
-        Log.d(TAG, "Sending signal on for $t ms")
+        Log.d(TAG, "[ON] ========== Sending signal on for $t ms ==========")
         var char = '.'
         if (t >= LONG_MS) {
             char = '-'
@@ -294,11 +294,12 @@ class SOSFlashlightService : Service() {
         turnOnFlash()
         playSound(t)
         vibrate(t)
+        Log.d(TAG, "Sleeping for $t ms")
         Thread.sleep(t)
     }
 
     private fun signalOff(t: Long) {
-        Log.d(TAG, "Sending signal off for $t ms")
+        Log.d(TAG, "[OFF] ========== Sending signal off for $t ms ==========")
         var char = ' '
         if (t >= INTERVAL_MS) {
             char = '/'
@@ -307,6 +308,7 @@ class SOSFlashlightService : Service() {
         turnOffFlash()
         stopSound()
         stopVibrate()
+        Log.d(TAG, "Sleeping for $t ms")
         Thread.sleep(t)
     }
 

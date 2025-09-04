@@ -1,0 +1,4 @@
+# SOS Flashlight v1.0.2 (10002) - Minor Update
+
+- Added: Flashlight Widget - Now you can add a convenient icon to your home screen for quick one-tap flashlight control.
+- Added: Screen Light feature - Access a full-screen white display for illumination when your device doesn't have a built-in flashlight.
